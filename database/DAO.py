@@ -11,7 +11,7 @@ class DAO:
 
         cursor = conn.cursor(dictionary=True)
         query = """
-                select distinct n.id, n.name
+                select distinct n.id, n.name, n.date_of_birth
                 from names n, role_mapping rm, movie m, ratings r
                 where n.id = rm.name_id
                 and rm.movie_id = m.id
@@ -24,7 +24,7 @@ class DAO:
         cursor.execute(query, (val_min, val_max))
 
         for row in cursor:
-            results.append(Actor(row["id"], row["name"]))
+            results.append(Actor(row["id"], row["name"], row["date_of_birth"]))
 
         cursor.close()
         conn.close()

@@ -9,6 +9,7 @@ class Controller:
 
     def handleCreaGrafo(self, e):
         self._view._txt_result.controls.clear()
+        self._actorValue = None
 
         try:
             val_min = float(self._view._txtRatingMin.value.replace(",", "."))
@@ -60,6 +61,20 @@ class Controller:
             self._view._txt_result.controls.append(
                 ft.Text(f"Attore con somma pesi incidenti massima: {actor_max_weight} (somma: {max_weight})")
             )
+
+            youngest = self._model.getYoungestActor()
+            oldest = self._model.getOldestActor()
+            if youngest is not None and oldest is not None:
+                self._view._txt_result.controls.append(
+                    ft.Text(f"Attore più giovane: {youngest} (nato il {youngest.DateOfBirth})")
+                )
+                self._view._txt_result.controls.append(
+                    ft.Text(f"Attore più anziano: {oldest} (nato il {oldest.DateOfBirth})")
+                )
+            else:
+                self._view._txt_result.controls.append(
+                    ft.Text("Data di nascita non disponibile per gli attori nel grafo.")
+                )
 
             self._view._txt_result.controls.append(ft.Text(""))
             self._view._txt_result.controls.append(ft.Text("Top 5 archi con peso maggiore:"))
@@ -128,6 +143,7 @@ class Controller:
 
     def _fillDDActors(self):
         self._view._ddActor.options.clear()
+        self._view._ddActor.value = None
         all_actors = self._model.getAllActors()
 
         actorOptions = list(

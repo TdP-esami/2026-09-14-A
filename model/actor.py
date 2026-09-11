@@ -5,8 +5,8 @@ from dataclasses import dataclass, field
 class Actor:
     NameId: str
     Name: str
-    # lista di dict {"movie_id", "title", "year", "rating"} dei film (con valutazione
-    # nell'intervallo selezionato dall'utente) in cui l'attore recita
+    DateOfBirth: object = None
+    # lista di dict dei film (con valutazione nell'intervallo selezionato dall'utente) in cui l'attore recita
     Movies: list = field(default_factory=list)
 
     def __hash__(self):
@@ -21,7 +21,7 @@ class Actor:
         return f"{self.Name}"
 
     def get_movie_ids(self):
-        """Ritorna l'insieme degli id dei film (nell'intervallo scelto) in cui l'attore recita."""
+        """Ritorna l'insieme degli id dei film in cui l'attore recita."""
         return {movie["movie_id"] for movie in self.Movies}
 
     def get_num_movies(self):

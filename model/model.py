@@ -16,7 +16,6 @@ class Model:
 
         self._actors = DAO.getActorsInRatingRange(val_min, val_max)
 
-        # popolo ogni attore con i film (nell'intervallo scelto) in cui recita
         for actor in self._actors:
             DAO.getMoviesForActorInRange(actor, val_min, val_max)
 
@@ -60,6 +59,18 @@ class Model:
                 best_actor = node
         return best_actor, max_sum
 
+    def getYoungestActor(self):
+        candidates = [a for a in self._graph.nodes if a.DateOfBirth is not None]
+        if not candidates:
+            return None
+        return max(candidates, key=lambda a: a.DateOfBirth)
+
+    def getOldestActor(self):
+        candidates = [a for a in self._graph.nodes if a.DateOfBirth is not None]
+        if not candidates:
+            return None
+        return min(candidates, key=lambda a: a.DateOfBirth)
+
     def getTop5Edges(self):
         if len(self._graph.edges) == 0:
             return []
@@ -89,7 +100,7 @@ class Model:
         return self._bestGroup, self._bestNumMovies
 
     def _ricorsione(self, parziale, N):
-        # condizione di terminazione: parziale è lunga N
+        # condizione di terminazione: parziale lunga N
         if len(parziale) == N:
             total_movies = self._getTotalMovies(parziale)
             if total_movies > self._bestNumMovies:
